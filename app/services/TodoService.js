@@ -31,7 +31,7 @@ class TodoService {
         const updatedTodoData = {
             completed: !todo.completed
         };
-        await api.put(`/api/todos/${todoId}`, updatedTodoData)
+        await api.post(`/api/todos/${todoId}`, updatedTodoData)
         todo.completed = !todo.completed
         AppState.emit('todos')
     }
