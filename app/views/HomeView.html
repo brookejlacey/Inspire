@@ -1,0 +1,39 @@
+<div class="container-fluid vh-100 d-flex flex-column bg-img">
+    <div class="background-image" id="background-image">
+        <main class="row flex-grow-1">
+            <div class="col-12 d-flex flex-column justify-content-between">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-end align-items-start mr-3 pt-3 pr-3">
+                        <div id="weather">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row flex-grow-1">
+                    <div class="col-12 d-flex justify-content-center align-items-center">
+                        <div id="clock">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="quote-box">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-end align-items-end p-3">
+                        <form onsubmit="app.todoController.addTodo(event)">
+                            <input type="text" name="description" placeholder="Add todo..." required>
+                            <button type="submit">+</button>
+                        </form>
+                        <ul id="todos"></ul>
+                        <div><span id="todo-count"></span> left</div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </main>
+</div>
