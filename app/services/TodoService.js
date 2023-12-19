@@ -27,6 +27,8 @@ class TodoService {
     }
 
     async toggleTodoStatus(todoId) {
+        // REVIEW need some console logs in here to verify each lines function
+        // this may function as intended but un clear right now
         const todo = AppState.todos.find(t => t.id === todoId)
         const updatedTodoData = {
             completed: !todo.completed
@@ -36,6 +38,9 @@ class TodoService {
         AppState.emit('todos')
     }
 
+    // REVIEW need to review this code with some console logs
+    // check the lines and make sure they are doing what you expect them too
+    // whats our response from the the api?
     async deleteTodo(todoId) {
         try {
             await api.delete(`/api/todos/${todoId}`)

@@ -28,6 +28,7 @@ export class TodoController {
         }
     }
 
+    //FIXME try catch?
     addTodo = (event) => {
         event.preventDefault()
         console.log('Adding todo...');
@@ -38,15 +39,16 @@ export class TodoController {
         todoService.addTodo(todoData)
         form.reset()
     }
-
+    //FIXME currently not working, try catch?
     toggleTodoStatus = (todoId) => {
         todoService.toggleTodoStatus(todoId)
     }
-
+    //FIXME currently not working, Where is the try catch?
     deleteTodo = (todoId) => {
         todoService.deleteTodo(todoId)
     }
 
+    //TODO part of this draw should count how many todos are left (completed == false) and render that to the page too.
     drawTodos = () => {
         const todos = AppState.todos
         const todosElem = document.getElementById('todos')

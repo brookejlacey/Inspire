@@ -1,11 +1,12 @@
 export class ClockController {
     constructor() {
+        //FIXME clock updates too slow and is behind
         this.updateClock()
         setInterval(() => this.updateClock(), 60000)
         //wait until everything else loads
-        window.onload = () => {
-            this.updateClock()
-        }
+        // window.onload = () => {
+        //     this.updateClock()
+        // }
     }
 
     updateClock() {
