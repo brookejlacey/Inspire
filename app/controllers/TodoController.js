@@ -1,70 +1,85 @@
 import { todoService } from "../services/TodoService.js";
 import { AppState } from "../AppState.js";
-import { setHTML } from "../utils/Writer.js";
 
 export class TodoController {
     constructor() {
         console.log('TodoController starting');
 
-        AppState.on('todos', () => this.drawTodos())
+        AppState.on('todos', () => this.drawTodos());
 
         if (AppState.user) {
-            this.getTodos()
+            this.getTodos();
         } else {
             AppState.on('account', () => {
                 if (AppState.account) {
-                    this.getTodos()
+                    this.getTodos();
                 }
-            })
+            });
         }
     }
 
-    getTodos = async () => {
-        console.log('getting todos...');
+    async getTodos() {
+        console.log('Getting todos...');
         try {
-            await todoService.getTodos()
+            await todoService.getTodos();
         } catch (error) {
             console.error('Error getting todos:', error);
         }
     }
 
-    //FIXME try catch?
-    addTodo = (event) => {
-        event.preventDefault()
+    async addTodo(event) {
+        event.preventDefault();
         console.log('Adding todo...');
-        const form = event.target
+
+        const form = event.target;
         console.log('Form data:', form);
-        const todoData = { description: form.description.value }
+
+        const todoData = { description: form.description.value };
         console.log('Todo data:', todoData);
-        todoService.addTodo(todoData)
-        form.reset()
-    }
-    //FIXME currently not working, try catch?
-    toggleTodoStatus = (todoId) => {
-        todoService.toggleTodoStatus(todoId)
-    }
-    //FIXME currently not working, Where is the try catch?
-    deleteTodo = (todoId) => {
-        todoService.deleteTodo(todoId)
+
+        try {
+            await todoService.addTodo(todoData);
+            form.reset();
+        } catch (error) {
+            console.error('Error adding todo:', error);
+        }
     }
 
-    //TODO part of this draw should count how many todos are left (completed == false) and render that to the page too.
-    drawTodos = () => {
-        const todos = AppState.todos
-        const todosElem = document.getElementById('todos')
-        let template = ''
+    async toggleTodoStatus(todoId) {
+        console.log(`Toggling status for todoId: ${todoId}`);
+        try {
+            await todoService.toggleTodoStatus(todoId);
+            console.log('Todo status toggled successfully.');
+        } catch (error) {
+            console.error('Error toggling todo status:', error);
+        }
+    }
+
+    async deleteTodo(todoId) {
+        console.log(`Deleting todo with ID: ${todoId}`);
+        try {
+            await todoService.deleteTodo(todoId);
+            console.log('Todo deleted successfully.');
+        } catch (error) {
+            console.error('Error deleting todo:', error);
+        }
+    }
+
+
+    drawTodos() {
+        const todos = AppState.todos;
+        const todosElem = document.getElementById('todos');
+        let template = '';
 
         todos.forEach(todo => {
-            template += `
-                <li class="${todo.completed ? 'completed' : ''}">
-                    <input type="checkbox" ${todo.completed ? 'checked' : ''} 
-                        onclick="app.todoController.toggleTodoStatus('${todo.id}')">
-                    ${todo.description}
-                    <button onclick="app.todoController.deleteTodo('${todo.id}')">X</button>
-                </li>
-            `
+            template += todo.getTodoTemplate();
         })
 
-        todosElem.innerHTML = template
+        todosElem.innerHTML = template;
+
+        // Count uncompleted tasks and render
+        const uncompletedTasks = todos.filter(todo => !todo.completed).length;
+        const todoCountElem = document.getElementById('todo-count');
+        todoCountElem.textContent = `${uncompletedTasks} left`;
     }
 }
